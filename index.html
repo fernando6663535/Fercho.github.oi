@@ -1,1 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Upload</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+        }
 
+        #upload-container {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        #upload-buttons {
+            margin-bottom: 20px;
+        }
+
+        #upload-buttons button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #upload-buttons button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        #file-inputs {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #file-inputs input[type="file"] {
+            display: none;
+        }
+
+        .media-preview {
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .media-preview img, .media-preview video, .media-preview audio {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-top: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        #profile-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        #profile-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+            border: 3px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div id="upload-container">
+        <div id="profile-container">
+            <input type="file" id="profile-input" accept="image/*" class="hidden">
+            <img id="profile-image" src="default-profile.png" alt="Profile Image">
+        </div>
+        <h1>Upload Media</h1>
+        <div id="upload-buttons">
+            <button id="upload-image-button">Upload Image</button>
+            <button id="upload-video-button">Upload Video</button>
+            <button id="upload-audio-button">Upload Audio</button>
+            <button id="clear-all-button">Clear All</button>
+        </div>
+        <div id="file-inputs">
+            <input type="file" id="upload-image-input" accept="image/*">
+            <input type="file" id="upload-video-input" accept="video/*">
+            <input type="file" id="upload-audio-input" accept="audio/*">
+        </div>
+        <div id="media-preview" class="media-preview"></div>
+        <div id="loader" class="loader hidden"></div>
+        <div id="error-message" class="error-message hidden"></div>
+    </div>
+
+    <!-- Link to the chatbot -->
+    <iframe src="chatbot.html" style="position: fixed; bottom: 20px; right: 20px; width: 290px; height: 110px; border: none; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></iframe>
+
+    <script src="media-upload.js"></script>
+    <script>
+        // Mostrar la imagen guardada al cargar la página
+        window.addEventListener('load', () => {
+            const savedImage = localStorage.getItem('profileImage');
+            if (savedImage) {
+                document.getElementById('profile-image').src = savedImage;
+            }
+        });
+
+        document.getElementById('profile-image').addEventListener('click', () => {
+            document.getElementById('profile-input').click();
+        });
+
+        document.getElementById('profile-input').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageDataUrl = e.target.result;
+                    document.getElementById('profile-image').src = imageDataUrl;
+                    // Guardar en localStorage
+                    localStorage.setItem('profileImage', imageDataUrl);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+  </html>
