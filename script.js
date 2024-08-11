@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     function fetchData() {
-        fetch('https://869f4db0-f4a9-4e3e-80bc-584b83f72c2e-00-1lfbcpjuok5s7.riker.replit.dev/receive-data') // Reemplaza con la URL pública de tu servidor en Replit
+        fetch('https://869f4db0-f4a9-4e3e-80bc-584b83f72c2e-00-1lfbcpjuok5s7.riker.replit.dev/receive-data') // Asegúrate de usar la URL correcta
             .then(response => response.json())
             .then(data => {
                 const dataDisplay = document.getElementById('data-display');
